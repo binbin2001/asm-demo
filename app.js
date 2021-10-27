@@ -9,7 +9,7 @@ const path = require('path')
 app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')))
 app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')))
 app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')))
-
+var idValue;
 // Static Files
 app.use(express.static('public'))
 app.use('/img', express.static(__dirname + 'public/images'))
@@ -21,10 +21,10 @@ app.post('/update', async (req, res) => {
     const price = req.body.txtPrice
     const url = req.body.txtURL
     let updateValues = { $set: { name: name, price: price, cat: category, picURL: url } };
-    // if (url.endsWith('png')==false) {
-    //     const productToEdit = await getDocumentById(idValue, "Products")
-    //     res.render('edit', {picError: 'Please Enter URL Again!', product: productToEdit })
-    // } else {
+    if (url.endsWith('png')==false) {
+        const productToEdit = await getDocumentById(idValue, "Products")
+        res.render('edit', {picError: 'Please Enter URL Again!', product: productToEdit })
+    } else {
     await updateDocument(id, updateValues, "Products")
     res.redirect('/')}
         // if (url.length == 0) {
@@ -37,7 +37,7 @@ app.post('/update', async (req, res) => {
         //     await updateDocument(id, updateValues, "Products")
         //     res.redirect('/')
         // };
-    )
+})
 
 app.get('/edit/:id', async (req, res) => {
     const idValue = req.params.id
