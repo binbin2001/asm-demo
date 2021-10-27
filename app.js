@@ -21,9 +21,21 @@ app.post('/update', async (req, res) => {
     const price = req.body.txtPrice
     const url = req.body.txtURL
     let updateValues = { $set: { name: name, price: price, cat: category, picURL: url } };
-
-     await updateDocument(id, updateValues, "Products")
-     res.redirect('/')
+    if (url.endsWith('png')==false) {
+        res.render('edit', {picError: 'Please Enter URL Again!' })
+    } else {
+    await updateDocument(id, updateValues, "Products")
+    res.redirect('/')}
+        // if (url.length == 0) {
+        //     var result = await getAll("Products")
+        //     res.render('edit', { products: result, picError: 'Phai nhap Picture!' })
+        // } else {
+        //     //xay dung doi tuong insert
+        //     const obj = { name: name, price: price, picURL: url, cat: category }
+        //     //goi ham de insert vao DB
+        //     await updateDocument(id, updateValues, "Products")
+        //     res.redirect('/')
+        // };
     })
 
 app.get('/edit/:id', async (req, res) => {
